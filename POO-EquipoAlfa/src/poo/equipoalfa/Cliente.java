@@ -5,6 +5,7 @@
  */
 package poo.equipoalfa;
 
+
 import java.sql.PreparedStatement;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -24,7 +25,8 @@ public class Cliente {
 //    private String MonederoElectronico;
 //    private Long idTarjeta;
 
-    //Método que hace la conexión con el GUI. Debe devolver si se pudo agregar o no el cliente.
+    //Método que hace la conexión con el GUI. Debe devolver si se pudo agregar o no el cliente. 
+    private static boolean e= false;
     public static boolean agregarCliente(String nombreDeCliente, String email, String telefono, String IDTarjeta) throws SQLException {
       
         try{
@@ -38,15 +40,17 @@ public class Cliente {
       preparedStmt.setString   (3, telefono);
       preparedStmt.setString(4, IDTarjeta);
       preparedStmt.setString(5, IDTarjeta);
-      preparedStmt.executeUpdate();
+      int a= preparedStmt.executeUpdate();
       
       String query1 = "insert into tarjetas (idTarjeta, NumTarjeta, saldo) values (?, ?, ?)";
       PreparedStatement stTarjetas = cc.prepareStatement(query1);
       stTarjetas.setString (1, IDTarjeta);
       stTarjetas.setString (2, IDTarjeta);
       stTarjetas.setDouble   (3, 0);
-      stTarjetas.executeUpdate();
-      
+      int b= stTarjetas.executeUpdate();
+       if (a != 0 && b!=0){
+           e= true;
+       }
       
       
         }
@@ -60,7 +64,7 @@ public class Cliente {
       
       
       
-       return true;
+       return e;
     }
 
     static String obtenerNombreClienteConMonedero(String IDTarjeta) {
