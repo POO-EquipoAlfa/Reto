@@ -25,7 +25,7 @@ import java.sql.*;
  */
 
 public class Bitacora {
-
+    private static boolean o=false;
     public static boolean registrarCompra(String IDTarjeta, String ticket, String cantidad) throws SQLException {
         
         try{
@@ -37,7 +37,10 @@ public class Bitacora {
       preparedStmt.setString (1, IDTarjeta);
       preparedStmt.setString (2, ticket);
       preparedStmt.setString (3,cantidad);
-      preparedStmt.executeUpdate();
+      int r= preparedStmt.executeUpdate();
+      if (r!= 0){
+          o=true;
+      }
         }
       catch (SQLException e){
           JOptionPane.showMessageDialog(null, "Error"+e);
@@ -46,7 +49,7 @@ public class Bitacora {
         catch(Exception r){
             JOptionPane.showMessageDialog(null, "Error"+r);
         }
-            return true;
+            return o;
         }
     }
     
