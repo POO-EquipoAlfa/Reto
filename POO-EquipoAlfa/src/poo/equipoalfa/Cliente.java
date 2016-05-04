@@ -5,13 +5,14 @@
  */
 package poo.equipoalfa;
 
-
 import java.sql.PreparedStatement;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
  
@@ -27,6 +28,7 @@ public class Cliente {
 
     //Método que hace la conexión con el GUI. Debe devolver si se pudo agregar o no el cliente. 
     private static boolean e= false;
+    private static String a;
     public static boolean agregarCliente(String nombreDeCliente, String email, String telefono, String IDTarjeta) throws SQLException {
       
         try{
@@ -68,8 +70,33 @@ public class Cliente {
     }
 
     static String obtenerNombreClienteConMonedero(String IDTarjeta) {
-        throw new UnsupportedOperationException("Not supported yet."); 
+        try {
+            mysqlConnection s = new mysqlConnection();
+        s.conexion();
+        Connection cc= s.conexion();
+        String select = "select nombre from clientes where idTarjetaC="+IDTarjeta;
+        ResultSet rs;
+        Statement stmt= cc.createStatement();
+        rs = stmt.executeQuery(select);
+        while ( rs.next() ) {
+                a = rs.getString("nombre");
+                
+               
+            }
+                 rs.close();
+                stmt.close();
+            }
+                
+        catch (SQLException ex) {
+            Logger.getLogger(MonederoElectronico.class.getName()).log(Level.SEVERE, null, ex);
+        }
+            catch (Exception e){
+                    
+                    } 
+        return a;
+    
     }
     
     
 }
+
