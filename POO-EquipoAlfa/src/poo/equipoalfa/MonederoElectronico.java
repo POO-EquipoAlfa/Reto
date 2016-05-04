@@ -4,7 +4,6 @@
  * and open the template in the editor.
  */
 package poo.equipoalfa;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -26,15 +25,16 @@ public class MonederoElectronico {
 //    private Long IDTarjeta;
 //    private Long IDMonedero;
 //    private double saldo;
-    private static Double sa;
+    private static double sa, in, monto;
     private static boolean b = false;
+    private static boolean e = false;
 
     public static boolean pago(String IDTarjeta, String cantidad) {
         if (cantidad.equalsIgnoreCase(".") || cantidad.equalsIgnoreCase(",") || cantidad == null) {            
             return false;
         } else {            
             
-            double monto = Double.parseDouble(cantidad);
+            monto = Double.parseDouble(cantidad);
             if (monto > 0) {
                 return modificarSaldoDeTablaMonedero(IDTarjeta, obtenerSaldoDeTablaMonedero(IDTarjeta) + monto);
             } else {
@@ -46,7 +46,7 @@ public class MonederoElectronico {
     
     protected static boolean cargoATarjeta(String IDTarjeta, double cargo) {
         // Debe sacar el saldo que tenga tal ID        
-        double monto = obtenerSaldoDeTablaMonedero(IDTarjeta);        
+        monto = obtenerSaldoDeTablaMonedero(IDTarjeta);        
         // Debe comparar el saldo que se tiene contra el que se pide.
         // Si se tiene suficiente saldo, se debe modificar la base de datos. En caso de no
         // contar con fondos suficientes, el método debe regresar False        
@@ -83,7 +83,7 @@ public class MonederoElectronico {
             mysqlConnection s = new mysqlConnection();
         s.conexion();
         Connection cc= s.conexion();
-        String select = "select clientes.nombre, tarjetas.saldo from tarjetas, clientes where tarjetas.NumTarjeta ="+IDTarjeta+" and clientes.numtarjetaC="+IDTarjeta;
+        String select = "select saldo from tarjetas, clientes where idTarjeta ="+IDTarjeta;
         ResultSet rs;
         Statement stmt= cc.createStatement();
         rs = stmt.executeQuery(select);
@@ -134,7 +134,69 @@ public class MonederoElectronico {
             Logger.getLogger(MonederoElectronico.class.getName()).log(Level.SEVERE, null, ex);
         } return b;
     } 
+
+    
+    static boolean agregarConfiguracion(String configuracion) {
+       try{
+        mysqlConnection con = new mysqlConnection();
+        con.conexion();
+        Connection cc= con.conexion();
+     
+      String query = "UPDATE incremento SET incremento= (?) WHERE idi = '1'";
+      PreparedStatement stTarjetas = cc.prepareStatement(query);
+      stTarjetas.setString (1, configuracion);
+      int b= stTarjetas.executeUpdate();
+       if (b!=0){
+           e= true;
+       }
+      
+      
+        }
+      catch (SQLException e){
+          JOptionPane.showMessageDialog(null, "Error"+e);
+      }
+      
+        catch(Exception r){
+            JOptionPane.showMessageDialog(null, "Error"+r);
+        }
+      
+      
+      
+       return e;
+    }
+    
+    public static double getIncremento(){        
+        try {
+            mysqlConnection s = new mysqlConnection();
+        s.conexion();
+        Connection cc= s.conexion();
+        String select = "select incremento from incremento";
+        ResultSet rs;
+        Statement stmt= cc.createStatement();
+        rs = stmt.executeQuery(select);
+        while ( rs.next() ) {
+                in = rs.getDouble("incremento");
+                
+               
+            }
+                 rs.close();
+                stmt.close();
+            }
+                
+        catch (SQLException ex) {
+            Logger.getLogger(MonederoElectronico.class.getName()).log(Level.SEVERE, null, ex);
+        }
+            catch (Exception e){
+                    
+                    }
+    
+    
+        return in;
+    }
+    
+    
+    }
     
 
-}
+
 
