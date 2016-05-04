@@ -81,10 +81,10 @@ public class Ventana3 extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if ((e.getSource() == btnAceptar) || (e.getSource() == txtCantidad)) {
             String IDTarjeta = txtIDTarjeta.getText();
-            String cantidad = txtCantidad.getText();            
+            Double cantidad = Double.parseDouble(txtCantidad.getText());            
 
         // Similar a Ventana 1, en el if debería ir el argumento que checa lo que 
-            if (MonederoElectronico.pago(IDTarjeta, cantidad)){
+            if (MonederoElectronico.cargoATarjeta(IDTarjeta, cantidad)){
                 JOptionPane.showMessageDialog(null, "Se ha pagado con éxito", "", -1);
                 salir();
             } else{
