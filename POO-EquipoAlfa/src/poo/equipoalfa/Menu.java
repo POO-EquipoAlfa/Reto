@@ -27,7 +27,7 @@ public class Menu extends JFrame implements ActionListener {
 //        Bitacora bitacora = new Bitacora();
 //        Transferencia transferencia = new Transferencia();
         
-        setBounds(200,200,400,400); //x,y,ancho,alto        
+        setBounds(200,200,500,380); //x,y,ancho,alto        
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //Programamos la X para cerrar la ventana               
         setLayout(new FlowLayout());
         setResizable(false);
